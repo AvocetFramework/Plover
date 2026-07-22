@@ -1,0 +1,54 @@
+create.app()
+    title = "Plover Dashboard v2.0"
+    dimensions = (1024, 768)
+    fullscreen = False
+
+app.configs()
+    api_url = "https://plover.dev"
+    refresh_rate_ms = 5000
+    state.user_role = "admin"
+    state.is_loading = True
+    state.metrics_data = []
+
+app.styling()
+    theme = "nord-dark"
+    primary_color = "#88C0D0"
+    danger_color = "#BF616A"
+    if state.user_role == "admin":
+        accent_color = "#EBCB8B"
+    else:
+        accent_color = "#A3BE8C"
+
+app.content()
+    # Header Section
+    with container(layout="row", padding=20):
+        heading(f"Welcome back, {state.user_role}!", style=primary_color)
+        button("Logout", on_click=handle_logout)
+    
+    if state.is_loading:
+        spinner(text="Fetching infrastructure health...")
+    else:
+        # Dynamic list rendering using standard Python loop syntax
+        with grid(columns=3, spacing=15):
+            for item in state.metrics_data:
+                with card(border_color=accent_color):
+                    text(item.name, size="bold")
+                    text(f"Status: {item.status}")
+                    
+                    # Nested interactions
+                    if item.status == "CRITICAL":
+                        button("Reboot Node", on_click=reboot_node(item.id), color=danger_color)
+
+
+loop.app()
+    async every(refresh_rate_ms):
+        try:
+            state.metrics_data = await fetch.json(api_url)
+            state.is_loading = False
+        except NetworkError:
+            state.is_loading = False
+            log_error("Could not reach API metrics endpoint.")
+
+  
+    on_keypress("ESC", action=exit_app)
+    on_window_resize(action=recalculate_layouts)
