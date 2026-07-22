@@ -1,9 +1,23 @@
-# Comments in Plover have a hashtag symbol in front of them. Multiline comments are not supported.
+create.app ("App Title")
 
-create.app ()
+app.configs (
+    size = 600px 800px; 
+    mode = system;
+) 
 
-app.configs () 
-app.styling ()
-app.content ()
+app.styling (
+    import file {style.css};
+)
 
-loop.app
+app.content (
+    class menubar {
+        option1 = File {
+            optionA = New File: command {onclick call script.plover} = Ctrl+N;
+            optionB = Open File: command {onclick call script.plover} = Ctrl+O;
+            menubar divisor;
+            optionC = Close App: command {onclick call script.plover} = Ctrl+A;
+        }
+    }
+)
+
+loop.app ()
