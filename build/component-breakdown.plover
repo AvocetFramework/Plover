@@ -1,0 +1,25 @@
+# Step 1: Initialize the application window
+create.app()
+    window_title = "Plover App"
+    window_size = (800, 600)
+
+# Step 2: Configure environmental settings
+app.configs()
+    debug_mode = True
+    hardware_acceleration = False
+
+# Step 3: Apply design tokens and branding
+app.styling()
+    bg_color = "#121212"
+    text_color = "#FFFFFF"
+    font_family = "Helvetica"
+
+# Step 4: Define the UI components and layout
+app.content()
+    label("Welcome to Plover")
+    button("Submit", action=on_click)
+
+# Step 5: Start the main execution loop
+loop.app()
+    listen_for_events()
+    refresh_screen()
