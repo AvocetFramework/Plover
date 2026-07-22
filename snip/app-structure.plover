@@ -1,0 +1,9 @@
+# Comments in Plover have a hashtag symbol in front of them. Multiline comments are not supported.
+
+create.app ()
+
+app.configs () 
+app.styling ()
+app.content ()
+
+loop.app
